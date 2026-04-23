@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codes auf Eiern und Autos - Lernplattform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .accent-yellow { color: #fbbf24; }
+        .bg-accent { background-color: #fbbf24; }
+        
+        /* CSS Ei-Design */
+        .egg {
+            width: 140px;
+            height: 180px;
+            background: #f3e5ab;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.1), 5px 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        
+        .egg-code {
+            color: #b91c1c;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            transform: rotate(-5deg);
+            text-align: center; /* Zentriert den Textinhalt */
+            line-height: 1.1;
+            width: 90%; /* Verhindert das Anstoßen an den Rand */
+            pointer-events: none;
+            display: block;
+        }
+
+        /* Kennzeichen Design */
+        .license-plate {
+            background: white;
+            border: 3px solid #333;
+            border-radius: 6px;
+            display: flex;
+            height: 80px;
+            width: 100%;
+            max-width: 400px;
+            overflow: hidden;
+            color: black;
+            font-family: 'DIN Condensed', 'Arial Narrow', sans-serif;
+            text-transform: uppercase;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .eu-strip {
+            background: #003399;
+            width: 45px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            color: white;
+            font-size: 0.7rem;
+        }
+        .eu-stars {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+        .plate-content {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: bold;
+            letter-spacing: 4px;
+            padding: 0 15px;
+        }
+
+        .info-card {
+            background: rgba(30, 41, 59, 0.7);
+            border-left: 4px solid #fbbf24;
+            transition: all 0.2s ease;
+        }
+        .info-card:hover {
+            background: rgba(51, 65, 85, 0.9);
+        }
+
+        /* Tabs Styling */
+        .tab-btn {
+            padding: 0.5rem 1.5rem;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+        .tab-btn.active {
+            color: #fbbf24;
+            border-bottom-color: #fbbf24;
+            background: rgba(251, 191, 36, 0.1);
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <!-- Navigation -->
+    <nav class="max-w-4xl mx-auto mb-10">
+        <a href="index.html" class="inline-flex items-center px-4 py-2 border-2 border-yellow-500 text-yellow-500 rounded-full hover:bg-yellow-500 hover:text-slate-900 transition-colors font-bold">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Zurück zur Übersicht
+        </a>
+    </nav>
+
+    <main class="max-w-4xl mx-auto space-y-16">
+        
+        <!-- Sektion 1: Eiercode mit Tabs -->
+        <section class="bg-slate-800/30 rounded-3xl p-1 border border-slate-700/50">
+            <div class="flex border-b border-slate-700 mb-6">
+                <button onclick="showTab('info')" id="tab-info" class="tab-btn active">Info: Eiercode verstehen</button>
+                <button onclick="showTab('quiz')" id="tab-quiz" class="tab-btn">Übung: Code-Check</button>
+            </div>
+
+            <!-- Tab: Info -->
+            <div id="content-info" class="p-6">
+                <h1 class="text-4xl font-extrabold mb-4 accent-yellow">Der Geheimcode auf dem Ei</h1>
+                <p class="text-slate-300 mb-8 text-lg">Hast du dich schon mal gefragt, was die Zahlen auf deinem Frühstücksei bedeuten? Jedes Ei in Europa hat einen Personalausweis!</p>
+                
+                <div class="grid md:grid-cols-2 gap-10 items-center">
+                    <div class="flex justify-center py-10">
+                        <div class="egg" id="mainEgg">
+                            <span class="egg-code" id="mainEggCode">1-DE-0212341</span>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="info-card p-4 rounded-r-lg group cursor-help" onmouseover="highlightPart('1')">
+                            <h3 class="font-bold text-yellow-400">1 – Die Haltungsform</h3>
+                            <p class="text-sm text-slate-300">0 = Bio, 1 = Freiland, 2 = Bodenhaltung, 3 = Käfighaltung.</p>
+                        </div>
+                        <div class="info-card p-4 rounded-r-lg group cursor-help" onmouseover="highlightPart('DE')">
+                            <h3 class="font-bold text-yellow-400">DE – Das Herkunftsland</h3>
+                            <p class="text-sm text-slate-300">Woher kommt das Ei? DE steht für Deutschland, AT für Österreich, NL für Niederlande.</p>
+                        </div>
+                        <div class="info-card p-4 rounded-r-lg group cursor-help" onmouseover="highlightPart('0212341')">
+                            <h3 class="font-bold text-yellow-400">0212341 – Die Betriebsnummer</h3>
+                            <p class="text-sm text-slate-300">Damit kann man genau sagen, von welchem Bauernhof das Ei stammt.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: Übung -->
+            <div id="content-quiz" class="p-6 hidden">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold accent-yellow mb-2">Werde zum Eier-Experten!</h2>
+                    <p class="text-slate-400">Schau dir den Code auf dem Ei an und beantworte die Frage.</p>
+                </div>
+
+                <div class="flex flex-col items-center">
+                    <div class="egg mb-8">
+                        <!-- Font-Size angepasst, damit es in der Mitte bleibt -->
+                        <span class="egg-code text-xl" id="quizEggCode">2-AT-4455661</span>
+                    </div>
+
+                    <div class="w-full max-w-md bg-slate-900/50 p-6 rounded-2xl border border-slate-700">
+                        <p id="quizQuestion" class="text-xl font-semibold mb-6">Welche Haltungsform hat dieses Ei?</p>
+                        
+                        <div id="quizOptions" class="grid gap-3">
+                            <!-- Options injected by JS -->
+                        </div>
+
+                        <div id="quizFeedback" class="mt-6 p-4 rounded-lg hidden text-center font-bold"></div>
+                        
+                        <button onclick="nextTask()" class="mt-6 w-full py-2 bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors hidden" id="nextBtn">
+                            Nächste Aufgabe
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-slate-700">
+
+        <!-- Sektion 2: Autokennzeichen -->
+        <section>
+            <h2 class="text-4xl font-extrabold mb-4 accent-yellow">Dein Wunsch-Kennzeichen</h2>
+            <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700">
+                <div class="flex justify-center mb-8">
+                    <div class="license-plate" id="previewPlate">
+                        <div class="eu-strip">
+                            <span class="eu-stars">★</span>
+                            <span class="font-bold">D</span>
+                        </div>
+                        <div class="plate-content" id="plateTextDisplay">B - KI 2024</div>
+                    </div>
+                </div>
+
+                <div class="max-w-sm mx-auto">
+                    <label class="block mb-2 text-sm font-medium text-slate-400">Gib deinen Text ein:</label>
+                    <input type="text" id="plateInput" maxlength="10" placeholder="Z.B. M - AI 555" 
+                           class="w-full bg-slate-900 border-2 border-slate-700 rounded-lg py-3 px-4 text-white focus:border-yellow-500 outline-none transition-all text-center text-xl uppercase">
+                </div>
+            </div>
+        </section>
+
+        <!-- Sektion 3: Europa Vergleich -->
+        <section class="pb-20">
+            <h2 class="text-3xl font-extrabold mb-6 accent-yellow">Kennzeichen in Europa</h2>
+            <div class="grid sm:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div class="license-plate bg-[#ffcc00] scale-75 origin-left">
+                        <div class="eu-strip">
+                            <span class="eu-stars">★</span>
+                            <span class="font-bold">NL</span>
+                        </div>
+                        <div class="plate-content">H-245-LZ</div>
+                    </div>
+                    <p class="text-sm text-slate-400">In den Niederlanden sind Schilder gelb.</p>
+                </div>
+                <div class="space-y-4">
+                    <div class="license-plate scale-75 origin-left" style="border-color: #b91c1c;">
+                        <div class="eu-strip" style="background: #b91c1c;">
+                             <span class="font-bold">A</span>
+                        </div>
+                        <div class="plate-content">W 12345 X</div>
+                    </div>
+                    <p class="text-sm text-slate-400">Österreich nutzt einen roten Rahmen.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Tab-Umschaltung
+        function showTab(tab) {
+            document.getElementById('content-info').classList.add('hidden');
+            document.getElementById('content-quiz').classList.add('hidden');
+            document.getElementById('tab-info').classList.remove('active');
+            document.getElementById('tab-quiz').classList.remove('active');
+
+            document.getElementById('content-' + tab).classList.remove('hidden');
+            document.getElementById('tab-' + tab).classList.add('active');
+
+            if(tab === 'quiz') startQuiz();
+        }
+
+        // Info-Tab: Eiercode Highlights
+        function highlightPart(part) {
+            const eggCode = document.getElementById('mainEggCode');
+            if(part === '1') {
+                eggCode.innerHTML = '<span class="bg-yellow-500/40 underline">1</span>-DE-0212341';
+            } else if(part === 'DE') {
+                eggCode.innerHTML = '1-<span class="bg-yellow-500/40 underline">DE</span>-0212341';
+            } else {
+                eggCode.innerHTML = '1-DE-<span class="bg-yellow-500/40 underline">0212341</span>';
+            }
+        }
+        document.querySelectorAll('.info-card').forEach(card => {
+            card.addEventListener('mouseleave', () => {
+                document.getElementById('mainEggCode').textContent = "1-DE-0212341";
+            });
+        });
+
+        // Quiz-Logik
+        const quizData = [
+            { code: "0-DE-12345", q: "Welche Haltungsform ist das?", a: "Bio-Haltung", options: ["Bio-Haltung", "Freiland", "Bodenhaltung"] },
+            { code: "2-NL-99887", q: "Aus welchem Land kommt dieses Ei?", a: "Niederlande", options: ["Deutschland", "Niederlande", "Österreich"] },
+            { code: "3-AT-11223", q: "Was bedeutet die 3 am Anfang?", a: "Käfighaltung", options: ["Bio", "Bodenhaltung", "Käfighaltung"] },
+            { code: "1-DE-55443", q: "Woher kommt das Ei?", a: "Deutschland", options: ["Dänemark", "Deutschland", "Belgien"] }
+        ];
+
+        let currentTask = 0;
+
+        function startQuiz() {
+            renderTask();
+        }
+
+        function renderTask() {
+            const task = quizData[currentTask];
+            document.getElementById('quizEggCode').textContent = task.code;
+            document.getElementById('quizQuestion').textContent = task.q;
+            document.getElementById('quizFeedback').classList.add('hidden');
+            document.getElementById('nextBtn').classList.add('hidden');
+            
+            const optionsDiv = document.getElementById('quizOptions');
+            optionsDiv.innerHTML = '';
+            
+            task.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-3 rounded-lg border border-slate-600 hover:border-yellow-500 hover:bg-slate-800 transition-all";
+                btn.textContent = opt;
+                btn.onclick = () => checkAnswer(opt);
+                optionsDiv.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selected) {
+            const feedback = document.getElementById('quizFeedback');
+            const task = quizData[currentTask];
+            feedback.classList.remove('hidden');
+            
+            if(selected === task.a) {
+                feedback.textContent = "Richtig! Gut gemacht! 🎉";
+                feedback.className = "mt-6 p-4 rounded-lg text-center font-bold bg-green-900/50 text-green-400";
+                document.getElementById('nextBtn').classList.remove('hidden');
+            } else {
+                feedback.textContent = "Leider falsch. Versuch es nochmal!";
+                feedback.className = "mt-6 p-4 rounded-lg text-center font-bold bg-red-900/50 text-red-400";
+            }
+        }
+
+        function nextTask() {
+            currentTask = (currentTask + 1) % quizData.length;
+            renderTask();
+        }
+
+        // Kennzeichen Generator
+        const plateInput = document.getElementById('plateInput');
+        const plateTextDisplay = document.getElementById('plateTextDisplay');
+        plateInput.addEventListener('input', (e) => {
+            plateTextDisplay.textContent = e.target.value.toUpperCase() || 'B - KI 2024';
+        });
+    </script>
+</body>
+</html>

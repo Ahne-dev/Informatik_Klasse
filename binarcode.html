@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binär-Meister Pro 🚀</title>
+    <style>
+        :root {
+            --bg-deep: #0a192f;
+            --bg-card: #112240;
+            --neon-green: #64ffda;
+            --neon-pink: #f06292;
+            --neon-blue: #00d4ff;
+            --text-main: #e6f1ff;
+            --text-dim: #8892b0;
+            --circuit-line: #1d2d50;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 15px;
+        }
+
+        .back-btn {
+            background: var(--bg-card);
+            color: var(--neon-green);
+            border: 2px solid var(--neon-green);
+            padding: 8px 18px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            width: 100%;
+            max-width: 800px;
+            background: var(--bg-card);
+            padding: 5px;
+            border-radius: 15px;
+            gap: 5px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px 5px;
+            border: none;
+            background: transparent;
+            color: var(--text-dim);
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: 0.3s;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        .tab-btn.active {
+            background: var(--neon-blue);
+            color: var(--bg-deep);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+        }
+
+        .container {
+            background: var(--bg-card);
+            width: 100%;
+            max-width: 800px;
+            padding: 25px;
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        h1 { color: var(--neon-green); font-size: 1.8rem; margin: 0 0 10px 0; }
+        .explanation { font-size: 1rem; color: var(--text-dim); line-height: 1.4; margin-bottom: 20px; }
+
+        /* Score Board */
+        .scoreboard {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .score-item {
+            background: rgba(0,0,0,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            border: 1px solid transparent;
+        }
+        .score-correct { color: var(--neon-green); border-color: var(--neon-green); }
+        .score-wrong { color: var(--neon-pink); border-color: var(--neon-pink); }
+
+        /* Helper Table */
+        .helper-table {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            max-width: 300px;
+            margin: 0 auto 20px auto;
+            background: rgba(100, 255, 218, 0.05);
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+        }
+
+        .helper-cell { display: flex; flex-direction: column; align-items: center; }
+        .helper-val { color: var(--neon-green); font-weight: bold; font-size: 1.1rem; }
+        .helper-label { color: var(--text-dim); font-size: 0.7rem; }
+
+        /* Challenge Area */
+        .challenge-box {
+            background: rgba(240, 98, 146, 0.05);
+            border: 2px solid var(--neon-pink);
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            transition: 0.3s;
+        }
+
+        .target-label { font-size: 1rem; color: var(--text-dim); margin-bottom: 5px; }
+        .target-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--neon-pink);
+            text-shadow: 0 0 10px rgba(240, 98, 146, 0.3);
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+        }
+
+        /* Input Area */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .answer-input {
+            background: #0d1b2a;
+            border: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+            font-family: 'Courier New', monospace;
+            font-size: 2.2rem;
+            text-align: center;
+            width: 100%;
+            max-width: 350px;
+            padding: 15px;
+            border-radius: 15px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .answer-input.binary-mode { letter-spacing: 5px; }
+
+        .answer-input:focus {
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            border-color: var(--text-main);
+        }
+
+        .check-btn {
+            background: var(--neon-green);
+            color: var(--bg-deep);
+            border: none;
+            padding: 15px 40px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .check-btn:active { transform: scale(0.95); }
+
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            min-height: 24px;
+        }
+        .feedback.success { color: var(--neon-green); animation: bounce 0.5s; }
+        .feedback.error { color: var(--neon-pink); }
+
+        /* Info Tab Switches */
+        .switch-board {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .switch-unit { display: flex; flex-direction: column; align-items: center; gap: 5px; flex-shrink: 0; }
+        .toggle-switch { position: relative; width: 35px; height: 60px; cursor: pointer; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #233554; border-radius: 6px; transition: 0.3s; }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 25px; left: 5px; bottom: 5px; background: #495670; border-radius: 3px; transition: 0.3s; }
+        input:checked + .slider { background: rgba(100, 255, 218, 0.2); }
+        input:checked + .slider:before { transform: translateY(-30px); background: var(--neon-green); }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @media (max-width: 500px) {
+            .answer-input { font-size: 1.5rem; }
+            .target-display { font-size: 2rem; }
+            .switch-board { gap: 5px; }
+            .toggle-switch { width: 30px; height: 50px; }
+            .slider:before { width: 20px; height: 18px; bottom: 4px; left: 5px;}
+            input:checked + .slider:before { transform: translateY(-24px); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <button class="back-btn" onclick="window.history.back()">⬅️ Zurück</button>
+    </header>
+
+    <nav class="nav-tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'info')">ℹ️ Info</button>
+        <button class="tab-btn" onclick="openTab(event, 'level1')">🟢 Leicht</button>
+        <button class="tab-btn" onclick="openTab(event, 'level2')">🟡 Mittel</button>
+        <button class="tab-btn" onclick="openTab(event, 'level3')">🔴 Schwer</button>
+    </nav>
+
+    <div class="container">
+        
+        <!-- INFO TAB -->
+        <div id="info" class="tab-content active">
+            <h1>Binär-Labor (8-Bit)</h1>
+            <p class="explanation">Experimentiere mit allen 8 Schaltern, um zu sehen wie ein Byte funktioniert (0 bis 255).</p>
+            <div class="switch-board">
+                <div class="switch-unit"><span style="color:var(--neon-green); font-size: 0.8rem;">128</span><label class="toggle-switch"><input type="checkbox" onchange="freePlay()" data-val="128"><span class="slider"></span></label></div>
+                <div class="switch-unit"><span style="color:var(--neon-green); font-size: 0.8rem;">64</span><label class="toggle-switch"><input type="checkbox" onchange="freePlay()" data-val="64"><span class="slider"></span></label></div>
+                <div class="switch-unit"><span style="color:var(--neon-green); font-size: 0.8rem;">32</span><label class="toggle-switch"><input type="checkbox" onchange="freePlay()" data-val="32"><span class="slider"></span></label></div>
+                <div class="switch-unit"><span style="color:var(--neon-green); font-size: 0.8rem;">16</span><label class="toggle-switch"><input type="checkbox" onchange="freePlay()" data-val="16"><span class="slider"></span></label></div>
+                <div class="switch-unit"><span style="color:var(--neon-green); font-size: 0.8rem;">8</span><label class="toggle-switch"><input type="checkbox" onchange="freePlay()" data-val="8"><span class="slider"></span></label></div>
+                <div class="switch-unit"><span style="color:var(--neon-green); font-size: 0.8rem;">4</span><label class="toggle-switch"><input type="checkbox" onchange="freePlay()" data-val="4"><span class="slider"></span></label></div>
+                <div class="switch-unit"><span style="color:var(--neon-green); font-size: 0.8rem;">2</span><label class="toggle-switch"><input type="checkbox" onchange="freePlay()" data-val="2"><span class="slider"></span></label></div>
+                <div class="switch-unit"><span style="color:var(--neon-green); font-size: 0.8rem;">1</span><label class="toggle-switch"><input type="checkbox" onchange="freePlay()" data-val="1"><span class="slider"></span></label></div>
+            </div>
+            <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 15px; margin-top: 10px;">
+                <div style="color: var(--text-dim); font-size: 0.9rem;">Binärcode:</div>
+                <div id="free-bin" style="font-family: monospace; font-size: 2rem; color: var(--neon-pink);">00000000</div>
+                <div style="color: var(--text-dim); font-size: 0.9rem; margin-top: 10px;">Dezimalzahl:</div>
+                <div id="free-dec" style="font-size: 1.5rem; color: var(--neon-green);">0</div>
+            </div>
+        </div>
+
+        <!-- LEVELS (TEMPLATE) -->
+        <div id="level-container">
+            <!-- Dynamisch genutzte Struktur für die Levels -->
+            <div id="level-ui" style="display: none;">
+                <div class="scoreboard">
+                    <div class="score-item score-correct">Richtig: <span id="count-correct">0</span></div>
+                    <div class="score-item score-wrong">Falsch: <span id="count-wrong">0</span></div>
+                </div>
+
+                <h1 id="level-title">Level</h1>
+                <p id="level-desc" class="explanation">Löse die Aufgabe!</p>
+                
+                <div id="helper-area"></div>
+
+                <div class="challenge-box">
+                    <div id="task-label" class="target-label">Übersetze:</div>
+                    <div id="task-display" class="target-display">?</div>
+                </div>
+
+                <div class="input-group">
+                    <input type="text" id="answer-input" class="answer-input" placeholder="Deine Antwort">
+                    <button class="check-btn" onclick="validateAnswer()">Prüfen!</button>
+                    <div id="level-feedback" class="feedback"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // State Management
+        const state = {
+            activeLevel: 0,
+            bits: 0,
+            currentTask: {
+                number: 0,
+                direction: 'decToBin' // or 'binToDec'
+            },
+            stats: {
+                level1: { correct: 0, wrong: 0, used: [] },
+                level2: { correct: 0, wrong: 0, used: [] },
+                level3: { correct: 0, wrong: 0, used: [] }
+            }
+        };
+
+        function openTab(evt, tabName) {
+            const contents = document.querySelectorAll(".tab-content");
+            contents.forEach(c => c.style.display = "none");
+            
+            const btns = document.querySelectorAll(".tab-btn");
+            btns.forEach(b => b.classList.remove("active"));
+
+            const levelUI = document.getElementById('level-ui');
+            if(tabName === 'info') {
+                document.getElementById('info').style.display = "block";
+                levelUI.style.display = "none";
+            } else {
+                document.getElementById('info').style.display = "none";
+                levelUI.style.display = "block";
+                state.activeLevel = parseInt(tabName.replace('level', ''));
+                state.bits = state.activeLevel === 1 ? 4 : (state.activeLevel === 2 ? 6 : 8);
+                setupLevel();
+            }
+            evt.currentTarget.classList.add("active");
+        }
+
+        function setupLevel() {
+            const levelKey = `level${state.activeLevel}`;
+            document.getElementById('level-title').textContent = `Level ${state.activeLevel}`;
+            document.getElementById('count-correct').textContent = state.stats[levelKey].correct;
+            document.getElementById('count-wrong').textContent = state.stats[levelKey].wrong;
+            
+            // Helper Table nur für Level 1
+            const helperArea = document.getElementById('helper-area');
+            if(state.activeLevel === 1) {
+                helperArea.innerHTML = `
+                    <div class="helper-table">
+                        <div class="helper-cell"><span class="helper-val">8</span><span class="helper-label">Bit 4</span></div>
+                        <div class="helper-cell"><span class="helper-val">4</span><span class="helper-label">Bit 3</span></div>
+                        <div class="helper-cell"><span class="helper-val">2</span><span class="helper-label">Bit 2</span></div>
+                        <div class="helper-cell"><span class="helper-val">1</span><span class="helper-label">Bit 1</span></div>
+                    </div>`;
+            } else {
+                helperArea.innerHTML = "";
+            }
+
+            generateTask();
+        }
+
+        function generateTask() {
+            const levelKey = `level${state.activeLevel}`;
+            const max = Math.pow(2, state.bits);
+            
+            if(state.stats[levelKey].used.length >= max - 1) {
+                state.stats[levelKey].used = [];
+            }
+
+            let num;
+            do {
+                num = Math.floor(Math.random() * (max - 1)) + 1;
+            } while (state.stats[levelKey].used.includes(num));
+
+            state.stats[levelKey].used.push(num);
+            state.currentTask.number = num;
+            state.currentTask.direction = Math.random() > 0.5 ? 'decToBin' : 'binToDec';
+
+            const display = document.getElementById('task-display');
+            const label = document.getElementById('task-label');
+            const input = document.getElementById('answer-input');
+            const feedback = document.getElementById('level-feedback');
+
+            feedback.textContent = "";
+            input.value = "";
+            input.classList.remove('binary-mode');
+
+            if(state.currentTask.direction === 'decToBin') {
+                label.textContent = "Dezimal ➔ Binär:";
+                display.textContent = num;
+                input.placeholder = "z.B. " + "0".repeat(state.bits);
+                input.classList.add('binary-mode');
+            } else {
+                label.textContent = "Binär ➔ Dezimal:";
+                display.textContent = num.toString(2).padStart(state.bits, '0');
+                input.placeholder = "z.B. 15";
+            }
+            input.focus();
+        }
+
+        function validateAnswer() {
+            const inputVal = document.getElementById('answer-input').value.trim();
+            const feedback = document.getElementById('level-feedback');
+            const levelKey = `level${state.activeLevel}`;
+            
+            if(!inputVal) return;
+
+            let isCorrect = false;
+            const targetNum = state.currentTask.number;
+
+            if(state.currentTask.direction === 'decToBin') {
+                isCorrect = (parseInt(inputVal, 2) === targetNum);
+            } else {
+                isCorrect = (parseInt(inputVal, 10) === targetNum);
+            }
+
+            if(isCorrect) {
+                state.stats[levelKey].correct++;
+                feedback.textContent = "✅ Richtig! Super!";
+                feedback.className = "feedback success";
+                document.getElementById('count-correct').textContent = state.stats[levelKey].correct;
+                setTimeout(generateTask, 1500);
+            } else {
+                state.stats[levelKey].wrong++;
+                feedback.textContent = "❌ Leider falsch. Probier es nochmal!";
+                feedback.className = "feedback error";
+                document.getElementById('count-wrong').textContent = state.stats[levelKey].wrong;
+            }
+        }
+
+        function freePlay() {
+            const boxes = document.querySelectorAll('#info input');
+            let bin = "";
+            let dec = 0;
+            boxes.forEach(box => {
+                if(box.checked) {
+                    bin += "1";
+                    dec += parseInt(box.getAttribute('data-val'));
+                } else {
+                    bin += "0";
+                }
+            });
+            document.getElementById('free-bin').textContent = bin;
+            document.getElementById('free-dec').textContent = dec;
+        }
+
+        document.getElementById('answer-input').addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') validateAnswer();
+        });
+
+        document.getElementById('answer-input').addEventListener('input', function() {
+            if(state.currentTask.direction === 'decToBin') {
+                this.value = this.value.replace(/[^01]/g, '');
+            } else {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code-Werkstatt | Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a;
+        }
+
+        /* Sanfter Glow-Effekt für die Karten */
+        .card-glow:hover {
+            box-shadow: 0 0 40px -10px rgba(124, 77, 255, 0.4);
+        }
+
+        /* Animation für den Header */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="text-slate-200 min-h-screen flex flex-col selection:bg-cyan-500/30">
+
+    <!-- Hintergrund-Deko (Subtile Leuchtpunkte) -->
+    <div class="fixed top-0 left-0 w-full h-full pointer-events-none -z-10 overflow-hidden">
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-900/20 blur-[120px] rounded-full"></div>
+        <div class="absolute bottom-[10%] right-[-5%] w-[30%] h-[30%] bg-cyan-900/20 blur-[100px] rounded-full"></div>
+    </div>
+
+    <!-- Header Section -->
+    <header class="pt-16 pb-8 px-6 text-center">
+        <div class="inline-block p-4 bg-slate-800/50 rounded-full mb-6 border border-slate-700/50 backdrop-blur-sm animate-float">
+            <span class="text-5xl">🚀</span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">
+            Willkommen in der <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">Code-Werkstatt!</span>
+        </h1>
+        <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+            Werde zum digitalen Detektiv und entdecke, wie Computer denken und kommunizieren.
+        </p>
+    </header>
+
+    <!-- Main Grid Content -->
+    <main class="flex-grow container mx-auto px-6 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-6">
+            
+            <!-- Karte 1: Geheimschriften -->
+            <a href="caesarscheibe.html" class="group relative bg-slate-800/40 p-8 rounded-2xl border border-slate-700/50 backdrop-blur-md transition-all duration-300 hover:-translate-y-2 hover:border-purple-500/50 card-glow overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <span class="text-6xl">🎡</span>
+                </div>
+                <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300 inline-block">🎡</div>
+                <h2 class="text-xl font-bold text-white mb-1">Geheimschriften</h2>
+                <p class="text-purple-400 text-sm font-semibold mb-3">Die Cäsarscheibe</p>
+                <p class="text-slate-400 text-sm leading-relaxed">Verschlüssele deine Nachrichten wie die alten Römer!</p>
+            </a>
+
+            <!-- Karte 2: 0 und 1 -->
+            <a href="binarcode.html" class="group relative bg-slate-800/40 p-8 rounded-2xl border border-slate-700/50 backdrop-blur-md transition-all duration-300 hover:-translate-y-2 hover:border-cyan-500/50 card-glow overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <span class="text-6xl">🤖</span>
+                </div>
+                <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300 inline-block">🤖</div>
+                <h2 class="text-xl font-bold text-white mb-1">0 und 1</h2>
+                <p class="text-cyan-400 text-sm font-semibold mb-3">Binärcode verstehen</p>
+                <p class="text-slate-400 text-sm leading-relaxed">Die Sprache der Computer. Alles besteht aus nur zwei Zeichen!</p>
+            </a>
+
+            <!-- Karte 3: Codes im Alltag -->
+            <a href="alltagscodes.html" class="group relative bg-slate-800/40 p-8 rounded-2xl border border-slate-700/50 backdrop-blur-md transition-all duration-300 hover:-translate-y-2 hover:border-pink-500/50 card-glow overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity text-5xl">🥚</div>
+                <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300 inline-block">🥚🚗</div>
+                <h2 class="text-xl font-bold text-white mb-1">Codes im Alltag</h2>
+                <p class="text-pink-400 text-sm font-semibold mb-3">Eiercode & Kennzeichen</p>
+                <p class="text-slate-400 text-sm leading-relaxed">Überall verstecken sich Codes. Wir zeigen dir, wie man sie liest.</p>
+            </a>
+
+            <!-- Karte 4: Scanner-Check -->
+            <a href="barcodes.html" class="group relative bg-slate-800/40 p-8 rounded-2xl border border-slate-700/50 backdrop-blur-md transition-all duration-300 hover:-translate-y-2 hover:border-emerald-500/50 card-glow overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <span class="text-6xl">📊</span>
+                </div>
+                <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300 inline-block">📊</div>
+                <h2 class="text-xl font-bold text-white mb-1">Scanner-Check</h2>
+                <p class="text-emerald-400 text-sm font-semibold mb-3">Barcodes & ISBN</p>
+                <p class="text-slate-400 text-sm leading-relaxed">Was verraten uns die schwarzen Striche auf den Produkten?</p>
+            </a>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-10 px-6 text-center border-t border-slate-800/50">
+        <p class="text-slate-500 text-sm tracking-wide">
+            &copy; 2024 <span class="text-slate-400 font-semibold italic">Entwickelt für junge Entdecker</span>
+        </p>
+    </footer>
+
+</body>
+</html>
